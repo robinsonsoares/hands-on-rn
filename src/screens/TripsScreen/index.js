@@ -1,47 +1,40 @@
 import React, { Component } from 'react'
-import { View, Text, Dimensions } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
+import Trip from './Trip'
 
 class TripsScreen extends Component {
-    static navigationOptions = { 
-        header: null
+    static navigationOptions = {
+        header : null
     }
-    render(){
-        const dim = Dimensions.get('window')
-        return (
-            <View style={{
+    renderItem = item => {
+        return <Trip onPress={() => this.props.navigation.navigate('Trip')} title={item.item.name} price={item.item.price} />
+    }
+    render(){  
+        const trips = [
+            { id: 1, name: 'Eurotrip 2019', price: 'R$ 5000'},
+            { id: 2, name: 'Expedição Atacama', price: 'R$ 3000'}
+        ]      
+        return(
+            <View style={{ 
                 flex: 1,
                 justifyContent: 'space-between',
-                alignItems: 'stretch'
+                alignItems: 'stretch' 
             }}>
-                <View style={{
+                <View style={{ 
                     backgroundColor: 'red',
                     flex: 1
-                }}>>
+                }}>
                     <Text>Mapa</Text>
                 </View>
-                <View style={{
-                    backgroundColor: 'pink'
-                }}>>
-                    <View style={{
-                        backgroundColor: 'white',
-                        paddingTop: 16,
-                        paddingLeft: 16
-                    }}>
-                        <View style={{
-                            backgroundColor: 'green',
-                            width: dim.width-32,
-                            height: 144
-                        }}>
-                        <Text>Image</Text></View>
-                        <Text>Eurotrip 2019</Text>
-                        <Text style={{
-                            position: 'absolute',
-                            top: 144-16,
-                            right:32,
-                            textAlign: 'right'
-                        }}>R$ 5000</Text>
-                    </View>                    
-                </View>
+                <View style={{ backgroundColor: 'pink'}}>
+                    <FlatList 
+                        data={trips} 
+                        renderItem={this.renderItem}
+                        horizontal
+                        pagingEnabled
+                        keyExtractor={ item => item.id }
+                    />                                      
+                </View>                
             </View>
         )
     }
