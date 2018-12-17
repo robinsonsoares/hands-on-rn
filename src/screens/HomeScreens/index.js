@@ -4,12 +4,15 @@ import assets from './assets'
 import styles from './styles'
 
 class HomeScreen extends Component {
+    static navigationOptions = {
+        header : null
+    }
     state = {
-        counter: 0
+        show: true
     }
     handleCounter = () => {
         this.setState({
-            counter: this.state.counter + 1
+            show: !this.state.show
         })
     }
     render(){
@@ -22,15 +25,27 @@ class HomeScreen extends Component {
             >
             <View style={styles.wrapperLogoTripPlanner}>
                 <Image source={assets.tripplanner} />
-            </View>
+            </View>            
             <View style={styles.wrapperLogoDevPleno}>
                 <Image source={assets.devpleno} />
             </View>
-            <TouchableWithoutFeedback onPress={this.handleCounter}>
+            {
+                !this.state.show ?             
+                <TouchableWithoutFeedback onPress={this.handleCounter}>
                 <View style={styles.buttonBackground}>
-                    <Text style={styles.buttonText}>COMEÇAR! {this.state.counter}</Text>
+                    <Text style={styles.buttonText}>COMEÇAR!</Text>
                 </View>
-            </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>
+            :
+                <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Trips')}>
+                <View style={styles.buttonEmptyStateBackground}>
+                    <Image source={assets.pin} style={styles.pin} />   
+                    <Text style={styles.buttonEmptyStateText}>Vamos planejar sua primeira viagem?</Text>
+                    <Image source={assets.arrow} style={styles.arrow} />
+                </View>
+                </TouchableWithoutFeedback>
+            }
+
             </ImageBackground>
         )
     }
